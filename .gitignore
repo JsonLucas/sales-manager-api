@@ -1,0 +1,10 @@
+/node_modules
+/dist
+/src/middlewares
+/src/controllers
+/src/routes
+.env
+*.error
+*.log
+*.xlsx
+*.pdf

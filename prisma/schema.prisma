@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model employees {
+	id Int @id @default(autoincrement())
+	name String
+	email String @unique
+	password String
+	positionId Int
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+	position positions @relation(fields: [positionId], references: [id])
+	board boards[]
+	unity unities[]
+	sale sales[]
+}
+
+model positions {
+	id Int @id @default(autoincrement())
+	name String @unique
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+	employee employees[]
+}
+
+model sales {
+	id Int @id @default(autoincrement())
+	coordinates String
+	value Float
+	saleDate DateTime
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+	unityId Int
+	employeeId Int
+	employee employees @relation(fields: [employeeId], references: [id])
+	unity unities @relation(fields: [unityId], references: [id])
+}
+
+model unities {
+	id Int @id @default(autoincrement())
+	name String @unique
+	coordinates String
+	boardId Int
+	managerId Int
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+	board boards @relation(fields: [boardId], references: [id])
+	employee employees @relation(fields: [managerId], references: [id])
+	sale sales[]
+}
+
+model boards {
+	id Int @id @default(autoincrement())
+	name String @unique
+	principalId Int
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+	employee employees @relation(fields: [principalId], references: [id])
+	unity unities[]
+}
