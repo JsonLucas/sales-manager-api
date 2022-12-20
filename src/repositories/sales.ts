@@ -15,7 +15,7 @@ export class SaleRepository implements ISaleRepository {
     return await prisma.sales.findUnique({ where: { id } });
   }
 
-  async getByEmployeeId(employeeId: number): Promise<ISale[] | null> {
+  async getBySellerId(employeeId: number): Promise<ISale[] | null> {
     return await prisma.sales.findMany({ where: { employeeId } });
   }
 

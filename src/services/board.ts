@@ -6,7 +6,10 @@ import { EmployeeRepository } from "../repositories/employee";
 export class BoardService implements IBoardService {
   private readonly employeeRepository: EmployeeRepository;
   private readonly boardRepository: BoardRepository;
-  constructor() {}
+  constructor() {
+    this.employeeRepository = new EmployeeRepository();
+    this.boardRepository = new BoardRepository();
+  }
 
   async create(body: Board): Promise<IBoard> {
     const { name, principalId } = body;

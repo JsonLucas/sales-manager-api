@@ -2,8 +2,8 @@ import jsonwebtoken from 'jsonwebtoken';
 import { jwtSecret } from '../utils/env';
 
 interface IToken {
-	verificate: (auth: string, type: string) => string,
-	generateRefreshToken: (userId: number, positionId: number) => string,
+	verificate: (auth: string, type: string) => any,
+	generateRefreshToken: (employeeId: number, positionId: number) => string,
 	generateAccessToken: (refreshToken: string) => string
 }
 
@@ -12,14 +12,14 @@ export class Token implements IToken {
 		if (!jwtSecret) throw { code: 500, error: "missing or invalid jwt key." };
 	}
 	
-	verificate(auth: string, type: string): string {
+	verificate(auth: string, type: string): any {
 		try {
 			const verification = jsonwebtoken.verify(auth, jwtSecret, { ignoreExpiration: false }) as any;
 			if(type === 'access'){
-				const access = jsonwebtoken.decode(verification.refreshToken) as string;
+				const access = jsonwebtoken.decode(verification.refreshToken);
 				return access;
 			}
-			return verification.userId;
+			return verification;
 		} catch (e: any) {
 			console.log(e);
 			if(type === 'refresh'){
@@ -32,8 +32,8 @@ export class Token implements IToken {
 		const accessToken = jsonwebtoken.sign({ refreshToken }, jwtSecret, { expiresIn: '1d' });
 		return accessToken;
 	}
-	generateRefreshToken(userId: number, positionId: number): string{
-		const refreshToken = jsonwebtoken.sign({ userId, positionId }, jwtSecret, { expiresIn: '30d' });
+	generateRefreshToken(employeeId: number, positionId: number): string{
+		const refreshToken = jsonwebtoken.sign({ employeeId, positionId }, jwtSecret, { expiresIn: '30d' });
 		return refreshToken;
 	}
 }

@@ -8,7 +8,11 @@ export class UnityService implements IUnityService {
   private readonly unityRepository: UnityRepository;
   private readonly employeeRepository: EmployeeRepository;
   private readonly boardRepository: BoardRepository;
-  constructor() {}
+  constructor() {
+    this.unityRepository = new UnityRepository();
+    this.employeeRepository = new EmployeeRepository();
+    this.boardRepository = new BoardRepository();
+  }
 
   async create(body: Unity): Promise<IUnity> {
     const { name, managerId, boardId } = body;

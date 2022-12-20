@@ -4,7 +4,9 @@ import { PositionRepository } from "../repositories/position";
 
 export class PositionService implements IPositionService {
   private readonly positionRepository: PositionRepository;
-  constructor() {}
+  constructor() {
+    this.positionRepository = new PositionRepository();
+  }
 
   async create(name: string): Promise<IPosition> {
     const position = await this.positionRepository.getByName(name);

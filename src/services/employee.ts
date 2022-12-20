@@ -5,7 +5,9 @@ import { EmployeeRepository } from "../repositories/employee";
 
 export class EmployeeService implements IEmployeeService {
   private readonly employeeRepository: EmployeeRepository;
-  constructor() {}
+  constructor() {
+	this.employeeRepository = new EmployeeRepository();
+  }
 
   async create(body: SignUp): Promise<IEmployee> {
     const { email } = body;

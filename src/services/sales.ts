@@ -8,15 +8,19 @@ export class SaleService implements ISaleService {
   private readonly employeeRepository: EmployeeRepository;
   private readonly unityRepository: UnityRepository;
   private readonly saleRepository: SaleRepository;
-  constructor() {}
+  constructor() {
+    this.employeeRepository = new EmployeeRepository();
+    this.unityRepository = new UnityRepository();
+    this.saleRepository = new SaleRepository();
+  }
 
   async create(body: Sale): Promise<ISale> {
     const { employeeId, unityId } = body;
     const employee = await this.employeeRepository.getById(employeeId);
     if (!employee) throw { code: 404, error: "employee not found." };
 
-	const unity = await this.unityRepository.getById(unityId);
-	if(!unity) throw { code: 404, error: 'unity not found.' };
+    const unity = await this.unityRepository.getById(unityId);
+    if (!unity) throw { code: 404, error: "unity not found." };
 
     return await this.saleRepository.create(body);
   }
@@ -34,14 +38,14 @@ export class SaleService implements ISaleService {
     return sale;
   }
 
-  async getByEmployeeId(employeeId: number): Promise<ISale[]> {
-    const employee = await this.employeeRepository.getById(employeeId);
+  async getBySellerId(sellerId: number): Promise<ISale[]> {
+    const employee = await this.employeeRepository.getById(sellerId);
     if (!employee) throw { code: 404, error: "employee not found." };
 
-    const employeeSales = await this.saleRepository.getByEmployeeId(employeeId);
-    if (!employeeSales) return [];
+    const sellerSales = await this.saleRepository.getBySellerId(sellerId);
+    if (!sellerSales) return [];
 
-    return employeeSales;
+    return sellerSales;
   }
 
   async getByUnityId(unityId: number): Promise<ISale[]> {
@@ -51,23 +55,23 @@ export class SaleService implements ISaleService {
     return await this.saleRepository.getByUnityId(unityId);
   }
 
-  async getByManagerId(managerId: number): Promise<ISale[]>{
-	const employee = await this.employeeRepository.getById(managerId);
-	if(!employee) throw { code: 404, error: 'employee not found.' };
+  async getByManagerId(managerId: number): Promise<ISale[]> {
+    const employee = await this.employeeRepository.getById(managerId);
+    if (!employee) throw { code: 404, error: "employee not found." };
 
-	const sales = await this.saleRepository.getByManagerId(managerId);
-	if(!sales) return [];
-	
-	return sales;
+    const sales = await this.saleRepository.getByManagerId(managerId);
+    if (!sales) return [];
+
+    return sales;
   }
 
-  async getByPrincipalId(principalId: number): Promise<ISale[]>{
-	const employee = await this.employeeRepository.getById(principalId);
-	if(!employee) throw { code: 404, error: 'employee not found.' };
+  async getByPrincipalId(principalId: number): Promise<ISale[]> {
+    const employee = await this.employeeRepository.getById(principalId);
+    if (!employee) throw { code: 404, error: "employee not found." };
 
-	const sales = await this.saleRepository.getByPrincipalId(principalId);
-	if(!sales) return [];
-	
-	return sales;
+    const sales = await this.saleRepository.getByPrincipalId(principalId);
+    if (!sales) return [];
+
+    return sales;
   }
 }
