@@ -14,3 +14,5 @@ export interface ISeedUnity{
 	managerId: number,
 	boardName: string
 }
+
+export type Unity = Omit<IUnity, 'id' | 'createdAt' | 'updatedAt'>;

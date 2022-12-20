@@ -9,5 +9,6 @@ export interface IEmployeeRepository {
 export interface IEmployeeService {
 	create: (body: SignUp) => Promise<IEmployee>,
 	getById: (id: number) => Promise<IEmployee>,
-	getByEmail: (login: Login) => Promise<IEmployee>
+	getByLogin: (login: Login) => Promise<IEmployee>,
+	getByEmail: (email: string) => Promise<IEmployee>,
 }

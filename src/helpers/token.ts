@@ -2,9 +2,9 @@ import jsonwebtoken from 'jsonwebtoken';
 import { jwtSecret } from '../utils/env';
 
 interface IToken {
-	verificate: (auth: string, type: string) => string;
-	generateAccessToken: (refreshToken: string) => string;
-	generateRefreshToken: (userId: number) => string;
+	verificate: (auth: string, type: string) => string,
+	generateRefreshToken: (userId: number, positionId: number) => string,
+	generateAccessToken: (refreshToken: string) => string
 }
 
 export class Token implements IToken {
@@ -25,15 +25,15 @@ export class Token implements IToken {
 			if(type === 'refresh'){
 				return this.generateAccessToken(auth);
 			}
-			throw { code: 400, error: e };
+			throw { code: 400, error: e.message };
 		}
 	}
 	generateAccessToken(refreshToken: string): string{
 		const accessToken = jsonwebtoken.sign({ refreshToken }, jwtSecret, { expiresIn: '1d' });
 		return accessToken;
 	}
-	generateRefreshToken(userId: number): string{
-		const refreshToken = jsonwebtoken.sign({ userId }, jwtSecret, { expiresIn: '30d' });
+	generateRefreshToken(userId: number, positionId: number): string{
+		const refreshToken = jsonwebtoken.sign({ userId, positionId }, jwtSecret, { expiresIn: '30d' });
 		return refreshToken;
 	}
 }
