@@ -1,3 +1,6 @@
+import { IBoard } from "./board";
+import { IEmployee } from "./employee";
+
 export interface IUnity{
 	id: number,
 	name: string,
@@ -16,3 +19,7 @@ export interface ISeedUnity{
 }
 
 export type Unity = Omit<IUnity, 'id' | 'createdAt' | 'updatedAt'>;
+export type ResponseUnityRepository = Pick<IUnity, 'id' | 'name' | 'coordinates'> 
+& { employee: Pick<IEmployee, 'name'> } 
+& { board: Pick<IBoard, 'name'> }
+export type ResponseUnityService = ResponseUnityRepository & { totalEarning: number };
