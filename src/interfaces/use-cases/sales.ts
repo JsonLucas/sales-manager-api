@@ -1,4 +1,4 @@
-import { ISale, ResponseSale, Sale } from "../entities/sales";
+import { ISale, ResponseSale, Sale, SetSale } from "../entities/sales";
 
 export interface ISaleRepository{
 	create: (body: Sale) => Promise<ISale>,
@@ -12,7 +12,7 @@ export interface ISaleRepository{
 }
 
 export interface ISaleService{
-	create: (body: Sale) => Promise<ISale>,
+	create: (body: SetSale) => Promise<ISale>,
 	getById: (id: number) => Promise<ResponseSale>,
 	getByUnityId: (unityId: number) => Promise<Array<ResponseSale>>,
 	getBySellerId: (sellerId: number) => Promise<Array<ResponseSale>>,

@@ -6,3 +6,10 @@ export const signInSchema = joi.object({
 });
 
 export const signUpSchema = joi.object({});
+
+export const createSaleSchema = joi.object({
+	value: joi.number().min(0.01).required(),
+	coordinates:  joi.string().required(),
+	saleDate: joi.date().required(),
+	unityName: joi.string().required()
+});

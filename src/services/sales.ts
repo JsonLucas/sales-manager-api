@@ -1,4 +1,4 @@
-import { Sale, ISale, ResponseSale } from "../interfaces/entities/sales";
+import { ISale, ResponseSale, SetSale } from "../interfaces/entities/sales";
 import { ISaleService } from "../interfaces/use-cases/sales";
 import { EmployeeRepository } from "../repositories/employee";
 import { SaleRepository } from "../repositories/sales";
@@ -14,15 +14,18 @@ export class SaleService implements ISaleService {
     this.saleRepository = new SaleRepository();
   }
 
-  async create(body: Sale): Promise<ISale> {
-    const { employeeId, unityId } = body;
+  async create(body: SetSale): Promise<ISale> {
+    const { employeeId, unityName, saleDate, value, coordinates } = body;
     const employee = await this.employeeRepository.getById(employeeId);
     if (!employee) throw { code: 404, error: "employee not found." };
 
-    const unity = await this.unityRepository.getById(unityId);
+    const unity = await this.unityRepository.getByName(unityName);
     if (!unity) throw { code: 404, error: "unity not found." };
 
-    return await this.saleRepository.create(body);
+	let roamingSale;
+	if(unity.coordinates !== coordinates) roamingSale = true;
+
+    return await this.saleRepository.create({ saleDate, value, employeeId, roamingSale, coordinates, unityId: unity.id });
   }
 
   async getAll(): Promise<ResponseSale[]> {

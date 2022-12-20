@@ -3,7 +3,7 @@ import { EmployeeService } from "../services/employee";
 import { PositionService } from "../services/position";
 import { SaleService } from "../services/sales";
 
-export const salesController = async (req: Request, res: Response) => {
+export const getSalesController = async (req: Request, res: Response) => {
   const { employeeData } = res.locals;
   const { employeeId } = employeeData;
 
@@ -30,4 +30,30 @@ export const salesController = async (req: Request, res: Response) => {
     default:
       throw { code: 400, error: "invalid employee position." };
   }
+};
+
+export const getSaleByIdController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { employeeData } = res.locals;
+  const { employeeId, positionId } = employeeData;
+
+  const saleService = new SaleService();
+  const positionService = new PositionService();
+
+  const { name } = await positionService.getById(positionId);
+  const sale = await saleService.getById(Number(id));
+  if (sale.employee.id !== employeeId && name === "Vendedor") throw { code: 401 };
+
+  res.status(200).send(sale);
+};
+
+export const createSaleController = async (req: Request, res: Response) => {
+  const { body } = req;
+  const { employeeData } = res.locals;
+  const { employeeId } = employeeData;
+
+  const saleService = new SaleService();
+  await saleService.create({ ...body, employeeId });
+
+  res.sendStatus(201);
 };

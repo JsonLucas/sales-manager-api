@@ -39,6 +39,7 @@ model sales {
 	saleDate DateTime
 	createdAt DateTime @default(now())
 	updatedAt DateTime @updatedAt
+	roamingSale Boolean? @default(false) 
 	unityId Int
 	employeeId Int
 	employee employees @relation(fields: [employeeId], references: [id])
