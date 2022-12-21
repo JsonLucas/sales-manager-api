@@ -9,7 +9,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
   if (completeAuth[0] !== "Bearer") throw { code: 401, error: "invalid access token." };
 
   const tokenAction = new Token();
-  const { employeeId, positionId } = tokenAction.verificate(completeAuth[1], "access");
+  const { employeeId, positionId } = tokenAction.verificate(completeAuth[1], "auth");
 
   res.locals.employeeData = { employeeId, positionId };
   next();

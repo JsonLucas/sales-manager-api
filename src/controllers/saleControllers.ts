@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { EmployeeService } from "../services/employee";
 import { PositionService } from "../services/position";
 import { SaleService } from "../services/sales";
+import { InvalidPosition, Unauthorized } from "../utils/constraints";
 
 export const getSalesController = async (req: Request, res: Response) => {
   const { employeeData } = res.locals;
@@ -28,7 +29,7 @@ export const getSalesController = async (req: Request, res: Response) => {
       const bySeller = await saleService.getBySellerId(employeeId);
       return res.status(200).send(bySeller);
     default:
-      throw { code: 400, error: "invalid employee position." };
+      throw InvalidPosition;
   }
 };
 
@@ -42,7 +43,7 @@ export const getSaleByIdController = async (req: Request, res: Response) => {
 
   const { name } = await positionService.getById(positionId);
   const sale = await saleService.getById(Number(id));
-  if (sale.employee.id !== employeeId && name === "Vendedor") throw { code: 401 };
+  if (sale.employee.id !== employeeId && name === "Vendedor") throw Unauthorized;
 
   res.status(200).send(sale);
 };

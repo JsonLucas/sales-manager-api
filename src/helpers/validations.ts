@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { IGenericObject } from "../interfaces/entities/generic-object";
+import { InvalidBodyFormat } from "../utils/constraints";
 
 interface IValidator<S, O>{
 	validate: (payload: IGenericObject, schema: S, options?: O) => Promise<void>
@@ -11,7 +12,7 @@ export class Validator implements IValidator<Joi.ObjectSchema, Joi.AsyncValidati
 			await schema.validateAsync(payload, options);
 		}catch(e: any){
 			console.log(e);
-			throw { code: 422, error: e };
+			throw InvalidBodyFormat(e);
 		}
 	}
 }

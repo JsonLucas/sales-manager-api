@@ -3,6 +3,7 @@ import { ISaleService } from "../interfaces/use-cases/sales";
 import { EmployeeRepository } from "../repositories/employee";
 import { SaleRepository } from "../repositories/sales";
 import { UnityRepository } from "../repositories/unity";
+import { EmployeeNotFound, SaleNotFound, UnityNotFound } from "../utils/constraints";
 
 export class SaleService implements ISaleService {
   private readonly employeeRepository: EmployeeRepository;
@@ -17,12 +18,12 @@ export class SaleService implements ISaleService {
   async create(body: SetSale): Promise<ISale> {
     const { employeeId, unityName, saleDate, value, coordinates } = body;
     const employee = await this.employeeRepository.getById(employeeId);
-    if (!employee) throw { code: 404, error: "employee not found." };
+    if (!employee) throw EmployeeNotFound;
 
     const unity = await this.unityRepository.getByName(unityName);
-    if (!unity) throw { code: 404, error: "unity not found." };
+    if (!unity) throw UnityNotFound;
 
-	let roamingSale;
+	let roamingSale = false;
 	if(unity.coordinates !== coordinates) roamingSale = true;
 
     return await this.saleRepository.create({ saleDate, value, employeeId, roamingSale, coordinates, unityId: unity.id });
@@ -36,14 +37,14 @@ export class SaleService implements ISaleService {
 
   async getById(id: number): Promise<ResponseSale> {
     const sale = await this.saleRepository.getById(id);
-    if (!sale) throw { code: 404, error: "sale not found." };
+    if (!sale) throw SaleNotFound;
 
     return sale;
   }
 
   async getBySellerId(sellerId: number): Promise<ResponseSale[]> {
     const employee = await this.employeeRepository.getById(sellerId);
-    if (!employee) throw { code: 404, error: "employee not found." };
+    if (!employee) throw EmployeeNotFound;
 
     const sellerSales = await this.saleRepository.getBySellerId(sellerId);
     if (!sellerSales) return [];
@@ -53,14 +54,14 @@ export class SaleService implements ISaleService {
 
   async getByUnityId(unityId: number): Promise<ResponseSale[]> {
     const unity = await this.unityRepository.getById(unityId);
-    if (!unity) throw { code: 404, error: "unity not found." };
+    if (!unity) throw UnityNotFound;
 
     return await this.saleRepository.getByUnityId(unityId);
   }
 
   async getByManagerId(managerId: number): Promise<ResponseSale[]> {
     const employee = await this.employeeRepository.getById(managerId);
-    if (!employee) throw { code: 404, error: "employee not found." };
+    if (!employee) throw EmployeeNotFound;
 
     const sales = await this.saleRepository.getByManagerId(managerId);
     if (!sales) return [];
@@ -70,7 +71,7 @@ export class SaleService implements ISaleService {
 
   async getByPrincipalId(principalId: number): Promise<ResponseSale[]> {
     const employee = await this.employeeRepository.getById(principalId);
-    if (!employee) throw { code: 404, error: "employee not found." };
+    if (!employee) throw EmployeeNotFound;
 
     const sales = await this.saleRepository.getByPrincipalId(principalId);
     if (!sales) return [];
