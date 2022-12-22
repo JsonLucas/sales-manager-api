@@ -14,7 +14,7 @@ export const signInController = async (req: Request, res: Response) => {
   const refreshToken = tokenAction.generateRefreshToken(id, positionId);
   const accessToken = tokenAction.generateAccessToken(refreshToken);
 
-  const allUnitiesData = await unityService.getAll();
+  const allUnitiesData = await unityService.getAll(); //colocar um filtro aqui para restringir o vendedor
   return res.status(200).send({ refreshToken, accessToken, unitiesData: allUnitiesData });
 };
 

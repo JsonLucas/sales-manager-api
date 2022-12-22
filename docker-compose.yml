@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  pg: 
+    image: postgres
+    container_name: sales_manager_db
+    restart: always
+    networks:
+      - sales_manager_network
+    env_file:
+      - .env
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - 2345:5432
+
+  sales_manager_api:
+    build: .
+    depends_on:
+      - pg
+    ports: 
+      - "5000:5000"
+    env_file:
+      - .env
+    networks:
+      - sales_manager_network
+
+networks:
+  sales_manager_network:
+    driver: bridge
