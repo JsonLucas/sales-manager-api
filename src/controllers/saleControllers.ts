@@ -43,7 +43,12 @@ export const getSaleByIdController = async (req: Request, res: Response) => {
 
   const { name } = await positionService.getById(positionId);
   const sale = await saleService.getById(Number(id));
-  if (sale.employee.id !== employeeId && name === "Vendedor") throw Unauthorized;
+  if (
+    (sale.employee.id !== employeeId && name === "Vendedor") ||
+    (sale.unity.managerId !== employeeId && name === "Gerente") ||
+    (sale.unity.board.principalId !== employeeId && name === "Diretor")
+  )
+    throw Unauthorized;
 
   res.status(200).send(sale);
 };
@@ -51,7 +56,11 @@ export const getSaleByIdController = async (req: Request, res: Response) => {
 export const createSaleController = async (req: Request, res: Response) => {
   const { body } = req;
   const { employeeData } = res.locals;
-  const { employeeId } = employeeData;
+  const { employeeId, positionId } = employeeData;
+
+  const positionService = new PositionService();
+  const { name } = await positionService.getById(Number(positionId));
+  if (name !== "Vendedor") throw Unauthorized;
 
   const saleService = new SaleService();
   await saleService.create({ ...body, employeeId });

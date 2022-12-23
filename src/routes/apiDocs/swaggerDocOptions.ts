@@ -222,8 +222,5 @@ export const swaggerOptions = {
         },
       },
     },
-	'/refresh-token': {
-		post:{}
-	}
   },
 };

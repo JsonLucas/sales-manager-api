@@ -1,3 +1,4 @@
+import { IBoard } from "./board";
 import { IEmployee } from "./employee";
 import { IUnity } from "./unity";
 
@@ -6,7 +7,7 @@ export interface ISale {
   coordinates: string;
   value: number;
   saleDate: Date;
-  roamingSale?: boolean,
+  roamingSale?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
   unityId: number;
@@ -23,5 +24,7 @@ export type SetSale = Omit<ISale, "id" | "createdAt" | "updatedAt" | "unityId"> 
 export type ResponseSale = Omit<ISale, "createdAt" | "updatedAt" | "employeeId" | "unityId"> 
 & {
   employee: Pick<IEmployee, "id" | "name">;
-  unity: Pick<IUnity, "id" | "name">;
+  unity: Pick<IUnity, "id" | "name" | "managerId"> & {
+    board: Pick<IBoard, "name" | "id" | "principalId">;
+  };
 };

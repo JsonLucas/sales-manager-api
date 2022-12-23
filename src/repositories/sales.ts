@@ -13,10 +13,17 @@ export class SaleRepository implements ISaleRepository {
         id: true,
         saleDate: true,
         value: true,
-        coordinates: true,
 		roamingSale: true,
+        coordinates: true,
         employee: { select: { id: true, name: true } },
-        unity: { select: { id: true, name: true } },
+        unity: {
+          select: {
+            id: true,
+            name: true,
+			managerId: true,
+            board: { select: { id: true, name: true, principalId: true } },
+          },
+        },
       },
     });
   }
@@ -31,7 +38,14 @@ export class SaleRepository implements ISaleRepository {
 		roamingSale: true,
         coordinates: true,
         employee: { select: { id: true, name: true } },
-        unity: { select: { id: true, name: true } },
+        unity: {
+          select: {
+            id: true,
+            name: true,
+			managerId: true,
+            board: { select: { id: true, name: true, principalId: true } },
+          },
+        },
       },
     });
   }
@@ -46,7 +60,14 @@ export class SaleRepository implements ISaleRepository {
 		roamingSale: true,
         coordinates: true,
         employee: { select: { id: true, name: true } },
-        unity: { select: { id: true, name: true } },
+        unity: {
+          select: {
+            id: true,
+            name: true,
+			managerId: true,
+            board: { select: { id: true, name: true, principalId: true } },
+          },
+        },
       },
     });
   }
@@ -58,10 +79,17 @@ export class SaleRepository implements ISaleRepository {
         id: true,
         saleDate: true,
         value: true,
-        coordinates: true,
 		roamingSale: true,
+        coordinates: true,
         employee: { select: { id: true, name: true } },
-        unity: { select: { id: true, name: true } },
+        unity: {
+          select: {
+            id: true,
+            name: true,
+			managerId: true,
+            board: { select: { id: true, name: true, principalId: true } },
+          },
+        },
       },
     });
   }
@@ -76,7 +104,14 @@ export class SaleRepository implements ISaleRepository {
 		roamingSale: true,
         coordinates: true,
         employee: { select: { id: true, name: true } },
-        unity: { select: { id: true, name: true } },
+        unity: {
+          select: {
+            id: true,
+            name: true,
+			managerId: true,
+            board: { select: { id: true, name: true, principalId: true } },
+          },
+        },
       },
     });
   }
@@ -87,11 +122,18 @@ export class SaleRepository implements ISaleRepository {
       select: {
         id: true,
         saleDate: true,
-		roamingSale: true,
         value: true,
+		roamingSale: true,
         coordinates: true,
         employee: { select: { id: true, name: true } },
-        unity: { select: { id: true, name: true } },
+        unity: {
+          select: {
+            id: true,
+            name: true,
+			managerId: true,
+            board: { select: { id: true, name: true, principalId: true } },
+          },
+        },
       },
     });
   }

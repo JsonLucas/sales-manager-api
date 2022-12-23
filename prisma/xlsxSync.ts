@@ -1,3 +1,4 @@
+import fs from 'fs';
 import xlsx from "node-xlsx";
 import { prisma } from "../src/utils/prisma";
 import { Crypt } from "../src/helpers/crypt";
@@ -7,7 +8,7 @@ import { ISeedUnity } from "../src/interfaces/entities/unity";
 import { ISeedSales } from "../src/interfaces/entities/sales";
 
 export const seedDataFromXlsx = async () => {
-  let coordinatesIndex,
+  let fileName, coordinatesIndex,
     boardNameIndex,
     employeeNameIndex,
     emailindex,
@@ -17,7 +18,14 @@ export const seedDataFromXlsx = async () => {
     bodyBoard,
     bodyUnity,
     bodySale;
-  const { data } = xlsx.parse(`${__dirname}/dados-do-projeto.xlsx`)[0];
+  const dir = fs.readdirSync('./prisma');
+  for(let i of dir){
+	const items = i.split('.');
+	if(items.find((item) => item === 'xlsx')){
+		fileName = i;
+	}
+  }
+  const { data } = xlsx.parse(`${__dirname}/${fileName}`)[0];
   const voidIndexes = findVoids(data);
   const formatedArray = fillFormatedArray(voidIndexes, data);
   for (let i of formatedArray) {
