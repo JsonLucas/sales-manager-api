@@ -17,4 +17,9 @@ This project was generated with [NodeJS](https://nodejs.org/docs/latest-v17.x/ap
 * You must have [Docker](https://docs.docker.com/engine/install/) installed in your machine.
 * Rename the `.env.example` to `.env`.
 * Set a value to all environment variables.
-* Turn on docker desktop, navigate to current project folder and run `docker-compose up` on terminal to init the project container. 
+* Turn on docker desktop, navigate to current project folder and run `docker-compose up` on terminal to init the project container.
+
+# Api documentation
+
+* To access the api endpoints (to test or see documentation), **you must to have a program like [Insomnia](https://insomnia.rest/download)** in your machine.
+* Type `http://localhost:5000/docs` on url field. (in case using insomnia, type that url and use the `GET` http method) 
